@@ -1,6 +1,8 @@
 import streamlit as st
 from datetime import datetime
 
+from thread import thread_page
+
 
 def print_posts(posts: list):
     for post in posts:
@@ -39,12 +41,7 @@ if __name__ == "__main__":
             for result in st.session_state.search_results:
                 if st.sidebar.button(result):
                     st.toast(f"{result} を選択しました")
-                    st.rerun()
+                    thread_page(result)
 
     print_posts(st.session_state.posts)
 
-    msg = st.chat_input("チャットを開始", key="chat_input")
-    if msg:
-        st.session_state.posts.append({"text": msg, "time": st.session_state.get("time", datetime.now())})
-        st.toast("投稿を受け付けました")
-        st.rerun()
