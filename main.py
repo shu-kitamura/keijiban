@@ -1,5 +1,6 @@
 import streamlit as st
 
+from pages.thread import thread_page
 
 
 def main_page():
@@ -10,16 +11,22 @@ def main_page():
 
         if heystack:
             for thread in search_thread(heystack):
-                if st.button(thread):
-                    st.query_params.update(t=thread)
-                    st.switch_page("pages/thread.py")
+                st.button(thread, on_click=lambda t=thread: st.session_state.update({"page": "thread", "thread_title": t}))
 
 
 def search_thread(heystack: str) -> list:
-    return ["thread1", "thread2", "thread3"]
+    return [f"{heystack}1", f"{heystack}2", f"{heystack}3"]
 
 
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Keijiban App", layout="centered")
-    main_page()    
+    st.session_state.setdefault("page", "main")
+    st.session_state.setdefault("thread_title", "")
+    st.session_state.setdefault("posts", [])
+
+    match st.session_state.page:
+        case "main":
+            main_page()
+        case "thread":
+            thread_page(st.session_state.thread_title)
