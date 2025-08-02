@@ -1,6 +1,6 @@
 import streamlit as st
 
-from pages.thread import thread_page
+from thread import thread_page
 
 
 def main_page():
@@ -21,6 +21,7 @@ def search_thread(heystack: str) -> list:
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Keijiban App", layout="centered")
+
     st.session_state.setdefault("page", "main")
     st.session_state.setdefault("thread_title", "")
     st.session_state.setdefault("posts", [])
