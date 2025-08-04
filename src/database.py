@@ -5,14 +5,23 @@ import dotenv
 
 dotenv.load_dotenv()
 
-connection_string = os.getenv("CONNECTION_STRING")
+CONNECTION_STRING = os.getenv("CONNECTION_STRING")
 
-# print(s)
+def get_threads(thread_name):
+    with pyodbc.connect(CONNECTION_STRING) as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT * FROM thread WHERE name = ?", (thread_name,))
+            return cursor.fetchall()
 
-with pyodbc.connect(connection_string) as conn:
-    with conn.cursor() as cursor:
-        cursor.execute("SELECT TOP 3 name, collation_name FROM sys.databases")
-        row = cursor.fetchone()
-        while row:
-            print (str(row[0]) + " " + str(row[1]))
-            row = cursor.fetchone()
+def get_posts(thread_id):
+    with pyodbc.connect(CONNECTION_STRING) as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT * FROM post WHERE thread_id = ?", (thread_id,))
+            return cursor.fetchall()
+
+
+for thread_row in get_threads("テストスレッド"):
+    print("---" + str(thread_row[0]) + " " + str(thread_row[1]) + "---")
+    for post_row in get_posts(thread_row[0]):
+        print(str(post_row[0]) + " " + str(post_row[1]) + " " + str(post_row[2]) + " " + str(post_row[3]))
+
