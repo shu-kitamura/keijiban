@@ -7,21 +7,26 @@ dotenv.load_dotenv()
 
 CONNECTION_STRING = os.getenv("CONNECTION_STRING")
 
-def get_threads(thread_name):
+def select_threads(thread_name) -> list[pyodbc.Row]:
     with pyodbc.connect(CONNECTION_STRING) as conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM thread WHERE name = ?", (thread_name,))
+            cursor.execute("SELECT id, name FROM thread WHERE name LIKE ?", (f"%{thread_name}%",))
             return cursor.fetchall()
 
-def get_posts(thread_id):
+def select_posts(thread_id) -> list[pyodbc.Row]:
     with pyodbc.connect(CONNECTION_STRING) as conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM post WHERE thread_id = ?", (thread_id,))
+            cursor.execute("SELECT timestamp, content FROM post WHERE thread_id = ?", (thread_id,))
             return cursor.fetchall()
 
+def insert_post(thread_id, content):
+    with pyodbc.connect(CONNECTION_STRING) as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("INSERT INTO post (thread_id, content) VALUES (?, ?)", (thread_id, content))
+            conn.commit()
 
-for thread_row in get_threads("テストスレッド"):
-    print("---" + str(thread_row[0]) + " " + str(thread_row[1]) + "---")
-    for post_row in get_posts(thread_row[0]):
-        print(str(post_row[0]) + " " + str(post_row[1]) + " " + str(post_row[2]) + " " + str(post_row[3]))
-
+def insert_thread(thread_name: str):
+    with pyodbc.connect(CONNECTION_STRING) as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("INSERT INTO thread (name) VALUES (?)", (thread_name,))
+            conn.commit()
