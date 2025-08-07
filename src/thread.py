@@ -3,7 +3,15 @@ import streamlit as st
 from database import select_posts, insert_post
 
 def thread_page(thread_title: str, thread_id: str):
-    st.button("検索に戻る", on_click=lambda: st.session_state.update({"page": "main"}))
+    col1, col2 = st.columns(2, gap=None)
+
+    if col1.button("", icon=":material/arrow_back:"):
+        st.session_state.update({"page": "main"})
+        st.rerun()
+    if col2.button("", icon=":material/refresh:"):
+        st.rerun()
+
+
     st.title(thread_title)
 
     print_posts(thread_id)

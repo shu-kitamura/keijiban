@@ -28,5 +28,8 @@ def insert_post(thread_id, content):
 def insert_thread(thread_name: str):
     with pyodbc.connect(CONNECTION_STRING) as conn:
         with conn.cursor() as cursor:
-            cursor.execute("INSERT INTO thread (name) VALUES (?)", (thread_name,))
+            cursor.execute("INSERT INTO thread (name) OUTPUT INSERTED.id VALUES (?)", (thread_name,))
+            id = cursor.fetchone()
             conn.commit()
+
+    return id[0]
