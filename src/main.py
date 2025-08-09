@@ -1,3 +1,7 @@
+"""
+This module handles the drawing of the main page.
+"""
+
 import streamlit as st
 
 from thread import thread_page

@@ -1,3 +1,7 @@
+"""
+This module handles the drawing of thread page.
+"""
+
 import streamlit as st
 
 from database import select_posts, insert_post
