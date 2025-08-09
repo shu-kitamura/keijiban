@@ -19,13 +19,13 @@ def select_posts(thread_id) -> list[pyodbc.Row]:
             cursor.execute("SELECT timestamp, content FROM post WHERE thread_id = ?", (thread_id,))
             return cursor.fetchall()
 
-def insert_post(thread_id, content):
+def insert_post(thread_id, content) -> None:
     with pyodbc.connect(CONNECTION_STRING) as conn:
         with conn.cursor() as cursor:
             cursor.execute("INSERT INTO post (thread_id, content) VALUES (?, ?)", (thread_id, content))
             conn.commit()
 
-def insert_thread(thread_name: str):
+def insert_thread(thread_name: str) -> str:
     with pyodbc.connect(CONNECTION_STRING) as conn:
         with conn.cursor() as cursor:
             cursor.execute("INSERT INTO thread (name) OUTPUT INSERTED.id VALUES (?)", (thread_name,))
