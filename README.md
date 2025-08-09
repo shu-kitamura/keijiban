@@ -15,9 +15,14 @@ https://keijiban-gua6fbanfvhjg7bc.eastasia-01.azurewebsites.net/
 - スレッドを作成・検索（部分一致）
 - スレッドにメッセージを投稿・閲覧
 
-<img src="demo/thread_create.gif" width="800">  
+### デモ
 
-<img src="demo/thread_search.gif" width="800">  
+
+**スレッド作成**  
+<img src="demo/thread_create.gif" width="800" border=5>  
+
+**スレッド検索**  
+<img src="demo/thread_search.gif" width="800" border=5>  
 
 
 
