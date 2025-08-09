@@ -55,7 +55,7 @@ def create_mode() -> None:
         )
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="Keijiban App", layout="centered")
+    st.set_page_config(page_title="Keijiban App", page_icon=":material/forum:", layout="centered")
 
     st.session_state.setdefault("page", "main")
     st.session_state.setdefault("thread_name", "")
