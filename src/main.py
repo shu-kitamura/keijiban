@@ -58,25 +58,21 @@ def create_mode() -> None:
     thread_name = st.text_input("スレッドを作成", max_chars=64, placeholder="スレッド名を入力")
 
     if thread_name:
-        st.button(
-            "スレッドを作成",
-            on_click=lambda thread_name=thread_name: _insert_thread_wrapper(thread_name)
-        )
-
-def _insert_thread_wrapper(thread_name) -> None:
-    try:
-        st.session_state.update(
-            {"page": "thread", "thread_name": thread_name, "thread_id": insert_thread(thread_name)})
-    except DBError as e:
-        match e.error_kind:
-            case DBErrorKind.ConnectionError:
-                st.error("データベース接続に失敗しました。時間をおいて再度お試しください。")
-            case DBErrorKind.QueryError:
-                st.error("スレッドの作成に失敗しました。")
-        # とりあえず print する。
-        # TODO ログ出力
-        print(e)
-
+        try:
+            st.session_state.update(
+                {"page": "thread", "thread_name": thread_name, "thread_id": insert_thread(thread_name)})
+        except DBError as e:
+            match e.error_kind:
+                case DBErrorKind.ConnectionError:
+                    st.error("データベース接続に失敗しました。時間をおいて再度お試しください。")
+                case DBErrorKind.QueryError:
+                    st.error(
+                        "スレッドの作成に失敗しました。"
+                        "同名のスレッドが存在する可能性があります。存在しないことを確認してから再度お試しください。"
+                    )
+            # とりあえず print する。
+            # TODO ログ出力
+            print(e)
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Keijiban App", page_icon=":material/forum:", layout="centered")
