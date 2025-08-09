@@ -30,7 +30,7 @@ def main_page() -> None:
                 search_mode()
 
 def search_mode() -> None:
-    search_string = st.text_input("スレッドを検索", key="thread_search")
+    search_string = st.text_input("スレッドを検索")
 
     if search_string:
         for thread_row in select_threads(search_string):
@@ -44,7 +44,7 @@ def search_mode() -> None:
             )
 
 def create_mode() -> None:
-    thread_name = st.text_input("スレッド名を入力", key="thread_name")
+    thread_name = st.text_input("スレッド名を入力")
 
     if thread_name:
         st.button(

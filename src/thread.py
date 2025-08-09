@@ -20,7 +20,7 @@ def thread_page(thread_title: str, thread_id: str) -> None:
 
     print_posts(thread_id)
 
-    msg = st.chat_input("チャットを開始", key="chat_input")
+    msg = st.chat_input("チャットを開始")
     if msg:
         write_post(thread_id, msg)
 
