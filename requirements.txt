@@ -1,3 +1,4 @@
 streamlit
 dotenv
 pyodbc
+azure-ai-contentsafety

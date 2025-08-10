@@ -14,6 +14,7 @@ https://keijiban-gua6fbanfvhjg7bc.eastasia-01.azurewebsites.net/
 
 - スレッドを作成・検索（部分一致）
 - スレッドにメッセージを投稿・閲覧
+- AIによって不適切な投稿を拒否
 
 ### デモ
 
@@ -32,13 +33,16 @@ https://keijiban-gua6fbanfvhjg7bc.eastasia-01.azurewebsites.net/
 - Streamlit
 - Azure App Service
 - Azure SQL Database
+- Azure AI Foundry
 
 ## ソースコード構成
 
 ```
 src
-├── main.py     # トップページの表示処理
-├── thread.py   # スレッド用ページの表示処理
-└── database.py # データベースアクセス処理
+├── main.py       # トップページの表示処理
+├── thread.py     # スレッド用ページの表示処理
+├── database.py   # データベース関係の処理
+├── error.py      # アプリケーションで発生するエラー定義
+└── post_check.py # 投稿のチェック処理
 ```
 
