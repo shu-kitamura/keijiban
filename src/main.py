@@ -7,6 +7,7 @@ import streamlit as st
 from thread import thread_page
 from database import select_threads, insert_thread
 from error import DBError, DBErrorKind
+from post_check import is_safe_content
 
 
 def main_page() -> None:
@@ -57,10 +58,12 @@ def search_mode() -> None:
 def create_mode() -> None:
     thread_name = st.text_input("スレッドを作成", max_chars=64, placeholder="スレッド名を入力")
 
-    if thread_name:
+    if thread_name and is_safe_content(thread_name):
         try:
             st.session_state.update(
-                {"page": "thread", "thread_name": thread_name, "thread_id": insert_thread(thread_name)})
+                {"page": "thread", "thread_name": thread_name, "thread_id": insert_thread(thread_name)}
+            )
+            st.rerun()
         except DBError as e:
             match e.error_kind:
                 case DBErrorKind.ConnectionError:

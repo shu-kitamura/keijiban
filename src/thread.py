@@ -6,7 +6,7 @@ import streamlit as st
 
 from database import select_posts, insert_post
 from error import DBError, DBErrorKind
-from post_check import is_safe_post
+from post_check import is_safe_content
 
 def thread_page(thread_title: str, thread_id: str) -> None:
     col1, col2 = st.columns(2, gap=None)
@@ -21,7 +21,7 @@ def thread_page(thread_title: str, thread_id: str) -> None:
     print_posts(thread_id)
 
     msg = st.chat_input("チャットを開始", max_chars=1000)
-    if msg:
+    if msg and is_safe_content(msg):
         write_post(thread_id, msg)
 
 def print_posts(thread_id: str) -> None:
@@ -43,10 +43,6 @@ def print_posts(thread_id: str) -> None:
         print(e)
 
 def write_post(thread_id: str, content: str) -> None:
-    if not is_safe_post(content):
-        st.error("この投稿は不適切な内容を含んでいます。")
-        return
-
     try:
         insert_post(thread_id, content)
         st.toast("投稿を受け付けました")
