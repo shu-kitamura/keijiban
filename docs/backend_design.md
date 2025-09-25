@@ -14,12 +14,12 @@ This document describes the design of the API used by the backend service.
 
 | HTTP Method | Endpoint | Description | Authorization |
 |-------------|----------|-------------|---------------|
-| GET | `/api/threads/search` | Search threads | - |
-| GET | `/api/threads/{thread_id}` | Get the posts in the thread | - |
-| POST | `/api/threads` | Create thread | - |
-| DELETE | `/api/threads/{id}` | Delete thread | - |
-| POST | `/api/threads/{thread_id}/posts` | Create post | - |
-| DELETE | `/api/threads/{thread_id}/posts` | Delete post | - |
+| GET | `/api/v1/threads/search` | Search threads | - |
+| GET | `/api/v1/threads/{thread_id}` | Get the posts in the thread | - |
+| POST | `/api/v1/threads` | Create thread | - |
+| DELETE | `/api/v1/threads/{id}` | Delete thread | - |
+| POST | `/api/v1/threads/{thread_id}/posts` | Create post | - |
+| DELETE | `/api/v1/threads/{thread_id}/posts` | Delete post | - |
 
 Adding authorization in the future.  
 But authorization will not be implemented in this sprint.
@@ -49,6 +49,6 @@ But authorization will not be implemented in this sprint.
 |-------------|----------|-------------|
 | id | `str` | UUID |
 | thread_id | `str` | UUID |
-| body | `str` | Post body |
+| content | `str` | Post body |
 | author | `str` | The username of the post author |
 | create_at | `datetime` | The time the post was created |
