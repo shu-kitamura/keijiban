@@ -1,4 +1,10 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter
+from pydantic import BaseModel
+
+class Post(BaseModel):
+    content: str
+    author: str
+
 
 router = APIRouter(
     prefix="/threads/{thread_id}",
@@ -15,9 +21,16 @@ def get_posts(thread_id: str):
     }
 
 @router.post("/posts")
-def create_post(thread_id: str, post: dict):
+def create_post(thread_id: str, post: Post):
     return {
         "message": "Post created successfully",
         "thread_id": thread_id,
         "post": post
+    }
+
+
+@router.delete("/posts/{post_id}")
+def delete_post(thread_id: str, post_id: str):
+    return {
+        "message": "Post deleted successfully",
     }

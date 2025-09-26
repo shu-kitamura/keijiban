@@ -17,9 +17,9 @@ This document describes the design of the API used by the backend service.
 | GET | `/api/v1/threads/search` | Search threads | - |
 | GET | `/api/v1/threads/{thread_id}` | Get the posts in the thread | - |
 | POST | `/api/v1/threads` | Create thread | - |
-| DELETE | `/api/v1/threads/{id}` | Delete thread | - |
+| DELETE | `/api/v1/threads/{thread_id}` | Delete thread | - |
 | POST | `/api/v1/threads/{thread_id}/posts` | Create post | - |
-| DELETE | `/api/v1/threads/{thread_id}/posts` | Delete post | - |
+| DELETE | `/api/v1/threads/{thread_id}/posts/{post_id}` | Delete post | - |
 
 Adding authorization in the future.  
 But authorization will not be implemented in this sprint.
