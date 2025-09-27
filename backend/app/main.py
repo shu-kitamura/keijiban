@@ -1,5 +1,13 @@
 from fastapi import APIRouter, FastAPI
+from sqlmodel import SQLModel, create_engine
+
 from app.routers import threads, posts
+from app.database import models
+
+
+pg_url = "postgresql://user:password@localhost:5432/dev"
+engine = create_engine(pg_url, echo=True, future=True)
+SQLModel.metadata.create_all(engine)
 
 app = FastAPI()
 
