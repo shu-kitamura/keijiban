@@ -1,5 +1,5 @@
 from fastapi import APIRouter, FastAPI
-from routers import threads, posts
+from app.routers import threads, posts
 
 app = FastAPI()
 
