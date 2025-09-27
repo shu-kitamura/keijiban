@@ -1,15 +1,18 @@
+from contextlib import asynccontextmanager
+
 from fastapi import APIRouter, FastAPI
-from sqlmodel import SQLModel, create_engine
+from sqlmodel import SQLModel
 
 from app.routers import threads, posts
-import app.models
+from app import engine
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    import app.models
+    SQLModel.metadata.create_all(engine)
+    yield
 
-pg_url = "postgresql://user:password@localhost:5432/dev"
-engine = create_engine(pg_url, echo=True, future=True)
-SQLModel.metadata.create_all(engine)
-
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 api_v1 = APIRouter(prefix="/api/v1")
 api_v1.include_router(threads.router)

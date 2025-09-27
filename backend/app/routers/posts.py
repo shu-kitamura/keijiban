@@ -1,36 +1,31 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+from sqlmodel import select, delete
 
-class Post(BaseModel):
-    content: str
-    author: str
-
+from app.models import PostCreate, Post
+from app import sessionDep
 
 router = APIRouter(
-    prefix="/threads/{thread_id}",
+    prefix="/posts",
 )
 
-@router.get("")
-def get_posts(thread_id: str):
-    return {
-        "posts": [
-            {"id": "post1", "content": "Sample Post 1"},
-            {"id": "post2", "content": "Sample Post 2"}
-        ],
-        "thread_id": thread_id
-    }
+@router.get("/{thread_id}")
+def get_posts(thread_id: str, session: sessionDep) -> list[Post]:
+    statement = select(Post).where(Post.thread_id == thread_id)
+    posts = session.exec(statement).all()
+    return posts
 
-@router.post("/posts")
-def create_post(thread_id: str, post: Post):
-    return {
-        "message": "Post created successfully",
-        "thread_id": thread_id,
-        "post": post
-    }
+@router.post("/")
+def create_post(post: PostCreate, session: sessionDep) -> Post:
+    db_post = Post.model_validate(post)
+    session.add(db_post)
+    session.commit()
+    session.refresh(db_post)
+    return db_post
 
 
-@router.delete("/posts/{post_id}")
-def delete_post(thread_id: str, post_id: str):
-    return {
-        "message": "Post deleted successfully",
-    }
+@router.delete("/{post_id}")
+def delete_post(post_id: str, session: sessionDep):
+    statement = delete(Post).where(Post.id == post_id)
+    session.exec(statement)
+    session.commit()
+    return {"message": "Post deleted successfully"}
