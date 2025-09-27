@@ -1,12 +1,13 @@
 services:
   backend:
-    build: ./backend  # backend用Dockerfileがあるディレクトリ
+    build: ./backend
     container_name: backend
     ports:
-      - "8000:8000"   # FastAPIなどの場合
+      - "8000:8000"   # FastAPI のデフォルト
     depends_on:
       - db
     environment:
+      # TODO: ユーザ・パスワードなどを変更
       - DATABASE_URL=postgresql://user:password@db:5432/dev
     volumes:
       - ./backend:/app:delegated
@@ -16,6 +17,7 @@ services:
     container_name: postgres
     restart: always
     environment:
+      # TODO: ユーザ・パスワードなどを変更
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: dev
@@ -24,6 +26,17 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./setup_database.sql:/app/setup_database.sql:ro
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000" # Next.js のデフォルト
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/frontend:delegated
+    command: npm run dev
 
 volumes:
   db_data:
