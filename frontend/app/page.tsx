@@ -42,11 +42,7 @@ async function searchThreads(query: string): Promise<Thread[]> {
   const q = query.trim().toLowerCase();
   if (!q) return [];
   await new Promise((r) => setTimeout(r, 400)); // 擬似ロード
-  return SEED.filter(
-    (t) =>
-      t.title.toLowerCase().includes(q) ||
-      t.description.toLowerCase().includes(q)
-  );
+  return SEED
 }
 
 export default function Home() {
@@ -103,10 +99,11 @@ export default function Home() {
         {!isPending && results && results.length > 0 && (
             <ul className="divide-y">
               {results.map((t) => (
+                // TODO: Component に切り出し
                 <li key={t.id} className="py-3">
                   <article className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-2 md:gap-6 items-start">
                     <div>
-                      <h3 className="font-semibold leading-tight">{t.title}</h3>
+                      <h3 className="font-semibold leading-tight text-sky-600 hover:underline"><a href={`/thread/${t.id}`}>{t.title}</a></h3>
                       <p className="mt-1 text-sm text-slate-600">{t.description}</p>
                     </div>
                     <div className="md:text-right text-sm text-slate-600">
