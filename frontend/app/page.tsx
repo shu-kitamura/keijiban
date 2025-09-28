@@ -6,43 +6,21 @@ export type Thread = {
   id: string;
   title: string;
   description: string;
-  createdAt: string; // ISO
-  updatedAt: string; // ISO
+  owner: string;
+  created_at: string;
+  updated_at: string;
 };
-
-
-// --- ダミーデータ ---
-const SEED: Thread[] = [
-  {
-    id: "1",
-    title: "Next.js × FastAPI 連携メモ",
-    description: "API 設計、CORS、型の共有などのメモ",
-    createdAt: "2025-09-20T10:05:00Z",
-    updatedAt: "2025-09-27T13:40:00Z",
-  },
-  {
-    id: "2",
-    title: "eBPF/XDP 学習ログ",
-    description: "チェックサム、XDP_TX、ツールのリンク",
-    createdAt: "2025-08-30T03:00:00Z",
-    updatedAt: "2025-09-15T22:10:00Z",
-  },
-  {
-    id: "3",
-    title: "正規表現エンジンの最適化",
-    description: "NFA 化、Boyer-Moore、プロファイル結果",
-    createdAt: "2025-07-12T09:12:00Z",
-    updatedAt: "2025-09-10T12:00:00Z",
-  },
-];
 
 // --- ここをバックエンド呼び出しに置き換える ---
 async function searchThreads(query: string): Promise<Thread[]> {
   // ダミー: 前方・部分一致でフィルタ
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  await new Promise((r) => setTimeout(r, 400)); // 擬似ロード
-  return SEED
+  await new Promise((r) => setTimeout(r, 400));
+  const response = await fetch(`http://backend:8000/api/v1/threads/search?q=${encodeURIComponent(q)}`);
+  const threads = await response.json();
+  console.log(threads);
+  return threads
 }
 
 export default function Home() {
@@ -106,9 +84,9 @@ export default function Home() {
                       <h3 className="font-semibold leading-tight text-sky-600 hover:underline"><a href={`/thread/${t.id}`}>{t.title}</a></h3>
                       <p className="mt-1 text-sm text-slate-600">{t.description}</p>
                     </div>
-                    <div className="md:text-right text-sm text-slate-600">
-                      <div>作成日：{t.createdAt}</div>
-                      <div>更新日：{t.updatedAt}</div>
+                    <div className="md:text-right text-xs text-slate-600">
+                      <div>作成日：{t.created_at}</div>
+                      <div>更新日：{t.updated_at}</div>
                     </div>
                   </article>
                 </li>
