@@ -9,7 +9,7 @@ export type Post = {
 };
 
 async function getPosts(thread_id: string): Promise<Post[]> {
-    const response = await fetch(`http://backend:8000/api/v1/posts/${thread_id}`);
+    const response = await fetch(`http://backend:8000/api/v1/threads/${thread_id}/posts`);
     return response.json();
 }
  
