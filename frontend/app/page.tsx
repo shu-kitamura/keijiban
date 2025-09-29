@@ -16,8 +16,7 @@ async function searchThreads(query: string): Promise<Thread[]> {
   // ダミー: 前方・部分一致でフィルタ
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  await new Promise((r) => setTimeout(r, 400));
-  const response = await fetch(`http://backend:8000/api/v1/threads/search?q=${encodeURIComponent(q)}`);
+  const response = await fetch(`http://localhost:8000/api/v1/threads/search?q=${encodeURIComponent(q)}`);
   const threads = await response.json();
   console.log(threads);
   return threads

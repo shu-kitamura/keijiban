@@ -23,6 +23,11 @@ def search_threads(
     results = session.exec(statement).all()
     return results
 
+@router.get("/{thread_id}")
+def get_thread(thread_id: str, session: sessionDep) -> Thread | None:
+    thread = session.get(Thread, thread_id)
+    return thread
+
 @router.post("/")
 def create_thread(thread: ThreadCreate, session: sessionDep) -> Thread:
     db_thread = Thread.model_validate(thread)
