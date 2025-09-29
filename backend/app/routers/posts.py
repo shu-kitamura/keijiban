@@ -5,10 +5,10 @@ from app.models import PostCreate, Post
 from app import sessionDep
 
 router = APIRouter(
-    prefix="/posts",
+    prefix="/{thread_id}/posts",
 )
 
-@router.get("/{thread_id}")
+@router.get("/")
 def get_posts(thread_id: str, session: sessionDep) -> list[Post]:
     statement = select(Post).where(Post.thread_id == thread_id)
     posts = session.exec(statement).all()

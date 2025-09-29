@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Query
 from sqlmodel import select
 
-from app.models import ThreadCreate, Thread
 from app import sessionDep
+from app.models import ThreadCreate, Thread
+from app.routers.posts import router as posts_router
 
 router = APIRouter(
     prefix="/threads",
@@ -35,3 +36,5 @@ def create_thread(thread: ThreadCreate, session: sessionDep) -> Thread:
     session.commit()
     session.refresh(db_thread)
     return db_thread
+
+router.include_router(posts_router)

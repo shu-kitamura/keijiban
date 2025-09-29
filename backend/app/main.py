@@ -30,7 +30,6 @@ app.add_middleware(
 
 api_v1 = APIRouter(prefix="/api/v1")
 api_v1.include_router(threads.router)
-api_v1.include_router(posts.router)
 
 app.include_router(api_v1)
 

@@ -15,9 +15,10 @@ This document describes the design of the API used by the backend service.
 | HTTP Method | Endpoint | Description | Authorization |
 |-------------|----------|-------------|---------------|
 | GET | `/api/v1/threads/search` | Search threads | - |
-| GET | `/api/v1/threads/{thread_id}` | Get the posts in the thread | - |
+| GET | `/api/v1/threads/{thread_id}` | Get the thread | - |
 | POST | `/api/v1/threads` | Create thread | - |
 | DELETE | `/api/v1/threads/{thread_id}` | Delete thread | - |
+| GET | `/api/v1/threads/{thread_id}/posts` | Get posts in the thread | - |
 | POST | `/api/v1/threads/{thread_id}/posts` | Create post | - |
 | DELETE | `/api/v1/threads/{thread_id}/posts/{post_id}` | Delete post | - |
 
