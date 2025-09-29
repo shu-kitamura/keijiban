@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import APIRouter
 from sqlmodel import select, delete
 
@@ -15,7 +17,8 @@ def get_posts(thread_id: str, session: sessionDep) -> list[Post]:
     return posts
 
 @router.post("/")
-def create_post(post: PostCreate, session: sessionDep) -> Post:
+def create_post(thread_id: uuid.UUID, post_create: PostCreate, session: sessionDep) -> Post:
+    post = Post(**post_create.model_dump(), thread_id=thread_id)
     db_post = Post.model_validate(post)
     session.add(db_post)
     session.commit()
