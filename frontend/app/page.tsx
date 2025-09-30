@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 import type { Thread } from "./types";
 
 // --- ここをバックエンド呼び出しに置き換える ---
-async function _searchThreads(query: string): Promise<Thread[]> {
+async function searchThreads(query: string): Promise<Thread[]> {
   // ダミー: 前方・部分一致でフィルタ
   const q = query.trim().toLowerCase();
   if (!q) return [];
