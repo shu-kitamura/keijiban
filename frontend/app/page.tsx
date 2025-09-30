@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 
 import type { Thread } from "./types";
-import { searchThreads } from "./api/search";
 
 // --- ここをバックエンド呼び出しに置き換える ---
 async function _searchThreads(query: string): Promise<Thread[]> {
