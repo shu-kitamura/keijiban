@@ -2,17 +2,11 @@
 
 import { useState, useTransition } from "react";
 
-export type Thread = {
-  id: string;
-  title: string;
-  description: string;
-  owner: string;
-  created_at: string;
-  updated_at: string;
-};
+import type { Thread } from "./types";
+import { searchThreads } from "./api/search";
 
 // --- ここをバックエンド呼び出しに置き換える ---
-async function searchThreads(query: string): Promise<Thread[]> {
+async function _searchThreads(query: string): Promise<Thread[]> {
   // ダミー: 前方・部分一致でフィルタ
   const q = query.trim().toLowerCase();
   if (!q) return [];
