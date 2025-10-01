@@ -1,4 +1,8 @@
-function generateStaticParams() {}
+"use client";
+
+import PostCard from "@/app/components/postCard";
+import PostForm from "@/app/components/postInput";
+import { use } from "react";
 
 export type Post = {
   id: string;
@@ -29,22 +33,31 @@ export default async function Page(
             </h1>
 
             <div className="mx-auto max-w-3xl px-4 py-12">
-                <ul className="divide-y">
+                <ul>
                     {posts.map((post) => (
                         <li key={post.id} className="py-3">
-                            <article className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-2 md:gap-6 items-start">
-                                <div>
-                                    <p className="leading-tight">{post.content}</p>
-                                </div>
-                                <div className="md:text-right text-xs text-slate-600">
-                                    <p>作成日：{post.created_at}</p>
-                                    <p>投稿者：{post.author}</p>
-                                </div>
-                            </article>
+                            <PostCard
+                                content={post.content}
+                                author={post.author}
+                                created_at={post.created_at}
+                            />
                         </li>
                     ))}
                 </ul>
             </div>
+
+            <PostForm
+                onSubmit={async ({ content, name }) => {
+                    await fetch(`http://backend:8000/api/v1/threads/${thread_id}/posts`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ content, author: name }),
+                    });
+                }}
+                isSubmitting={false}
+            />
         </div>
     );
 }
