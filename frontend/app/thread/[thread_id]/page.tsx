@@ -2,7 +2,7 @@
 
 import PostCard from "@/app/components/postCard";
 import PostForm from "@/app/components/postInput";
-import { use } from "react";
+import type { Thread } from "../../types";
 
 export type Post = {
   id: string;
@@ -16,14 +16,16 @@ async function getPosts(thread_id: string): Promise<Post[]> {
     const response = await fetch(`http://backend:8000/api/v1/threads/${thread_id}/posts`);
     return response.json();
 }
+
+const thread: Thread = await fetch(`http://localhost:8000/api/v1/threads/1`).then((res) => res.json());
  
 export default async function Page(
     { params }: { 
         params: Promise<{ thread_id: string }>
     }
 ) {
+    console.log("pages")
     const { thread_id } = await params;
-    const thread = await fetch(`http://backend:8000/api/v1/threads/${thread_id}`).then((res) => res.json());
     const posts = await getPosts(thread_id);
 
     return (
@@ -46,18 +48,9 @@ export default async function Page(
                 </ul>
             </div>
 
-            <PostForm
-                onSubmit={async ({ content, name }) => {
-                    await fetch(`http://backend:8000/api/v1/threads/${thread_id}/posts`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ content, author: name }),
-                    });
-                }}
-                isSubmitting={false}
-            />
+            <div className="mx-auto max-w-3xl px-4 py-12">
+                <PostForm />
+            </div>
         </div>
     );
 }
