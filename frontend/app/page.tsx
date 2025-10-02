@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useTransition } from "react";
 
 import type { Thread } from "./types";
@@ -16,6 +15,8 @@ async function searchThreads(query: string): Promise<Thread[]> {
 }
 
 export default function Home() {
+
+  console.log("home");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Thread[] | null>(null);
   const [isPending, startTransition] = useTransition();
