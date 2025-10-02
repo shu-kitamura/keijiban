@@ -1,7 +1,7 @@
 
 import PostCard from "@/app/components/postCard";
 import PostForm from "@/app/components/postInput";
-import type { Post, Thread } from "../../types";
+import type { Post, Thread } from "@/app/types";
 
 async function getPosts(thread_id: string): Promise<Post[]> {
     const response = await fetch(`http://backend:8000/api/v1/threads/${thread_id}/posts`);
@@ -42,7 +42,6 @@ export default async function Page(
             <div className="mx-auto max-w-3xl px-4 py-12">
                 <PostForm 
                     thread_id={thread_id}
-
                 />
             </div>
         </div>
