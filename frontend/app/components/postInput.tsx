@@ -1,7 +1,5 @@
 "use client";
 
-import { useRouter } from 'next/router'
-
 type PostFormProps = {
     thread_id?: string;
 }
@@ -31,10 +29,9 @@ function handleSubmit(event: React.FormEvent, thread_id?: string) {
     }).then((res) => {
         if (res.ok) {
             alert("ポストを送信しました");
+            window.location.reload();
         }
     });
-
-    form.reset();
 }
 
 export default function PostForm({ thread_id }: PostFormProps) {
