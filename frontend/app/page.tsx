@@ -5,15 +5,6 @@ import type { Thread } from "@/app/types";
 import ThreadSearchResult from "@/app/components/threadSearchResult";
 import ThreadSearchInput from "./components/threadSearchInput";
 
-async function searchThreads(query: string): Promise<Thread[]> {
-  const q = query.trim().toLowerCase();
-  if (!q) return [];
-  const response = await fetch(`http://localhost:8000/api/v1/threads/search?q=${encodeURIComponent(q)}`);
-  const threads = await response.json();
-  console.log(threads);
-  return threads
-}
-
 export default function Home() {
   console.log("home");
   const [query, setQuery] = useState("");
