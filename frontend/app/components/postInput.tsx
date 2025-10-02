@@ -17,7 +17,7 @@ function handleSubmit(event: React.FormEvent, thread_id?: string) {
         return;
     }
 
-    fetch(`http://localhost:8000/api/v1/threads/${thread_id}/posts`, {
+    fetch(`/api/threads/${thread_id}/posts`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
