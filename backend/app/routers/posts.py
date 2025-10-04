@@ -1,10 +1,10 @@
 import uuid
 
 from fastapi import APIRouter
-from sqlmodel import select, delete
+from sqlmodel import delete, select
 
-from app.models import PostCreate, Post
 from app import sessionDep
+from app.models import Post, PostCreate
 
 router = APIRouter(
     prefix="/{thread_id}/posts",

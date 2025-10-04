@@ -2,7 +2,7 @@ from fastapi import APIRouter, Query
 from sqlmodel import select
 
 from app import sessionDep
-from app.models import ThreadCreate, Thread
+from app.models import Thread, ThreadCreate
 from app.routers.posts import router as posts_router
 
 router = APIRouter(

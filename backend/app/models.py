@@ -1,7 +1,8 @@
-from datetime import datetime
 import uuid
+from datetime import datetime
 
 from sqlmodel import Field, SQLModel
+
 
 class ThreadBase(SQLModel):
     title: str

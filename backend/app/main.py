@@ -4,12 +4,12 @@ from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import SQLModel
 
-from app.routers import threads, posts
 from app import engine
+from app.routers import threads
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    import app.models
     SQLModel.metadata.create_all(engine)
     yield
 
@@ -33,6 +33,6 @@ api_v1.include_router(threads.router)
 
 app.include_router(api_v1)
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.get("/health", tags=["Healthcheck"])
+async def healthcheck():
+    return {"status": "healthy"}
