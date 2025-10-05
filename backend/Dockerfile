@@ -5,7 +5,7 @@ FROM python:3.13.2
 WORKDIR /app
 
 # 依存関係をコピーしてインストール
-COPY requirements.txt .
+COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 
