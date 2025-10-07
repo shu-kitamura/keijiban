@@ -3,8 +3,10 @@ import PostCard from "@/app/components/postCard";
 import PostForm from "@/app/components/postInput";
 import type { Post, Thread } from "@/app/types";
 
+const backendOrigin = process.env.BACKEND_ORIGIN;
+
 async function getPosts(thread_id: string): Promise<Post[]> {
-    const response = await fetch(`http://backend/api/v1/threads/${thread_id}/posts`);
+    const response = await fetch(`${backendOrigin}/api/v1/threads/${thread_id}/posts`);
     return response.json();
 }
 
@@ -16,7 +18,7 @@ export default async function Page(
 ) {
     console.log("pages")
     const { thread_id } = await params;
-    const thread: Thread = await fetch(`http://backend/api/v1/threads/${thread_id}`).then((res) => res.json());
+    const thread: Thread = await fetch(`${backendOrigin}/api/v1/threads/${thread_id}`).then((res) => res.json());
     const posts = await getPosts(thread_id);
 
     return (
