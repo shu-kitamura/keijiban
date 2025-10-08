@@ -8,7 +8,10 @@ This document describes the design of the API used by the backend service.
 
 - **Language**: Python 3.13.2
 - **Framework**: Fastapi 0.117.1
-- **Database**: PostgreSQL xx
+- **Database**: SQL Server 2022
+- **Infrastructure**:
+  - Production: Azure (container apps, SQL Service, etc)
+  - Development: Docker
 
 ## Endpoints
 
@@ -38,8 +41,7 @@ But authorization will not be implemented in this sprint.
 |-------------|----------|-------------|
 | id | `str` | UUID |
 | title | `str` | 1 to 255 characters |
-| abstract | `str` | Optional |
-| tags | `list[str]` | Optional |
+| description | `str` | Optional |
 | owner | `str` | The username of the thread creator |
 | create_at | `datetime` | The time the thread was created |
 | update_at | `datetime` | The time the thread was updated |

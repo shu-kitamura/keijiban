@@ -14,3 +14,6 @@ This document describes the design of the API used by the frontend.
 | HTTP Method | Endpoint | Description | Authorization |
 |-------------|----------|-------------|---------------|
 | GET | `/` | Top page | - |
+| GET | `/thread` | Thread creation page | - |
+| GET | `/thread/{thread_id}` | Thread and Posts Page | - |
+| - | `/api/...` | Route to the backend | - |
