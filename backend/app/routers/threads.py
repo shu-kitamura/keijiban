@@ -1,3 +1,5 @@
+import uuid
+
 from fastapi import APIRouter, Query
 from sqlmodel import select
 
@@ -25,7 +27,7 @@ def search_threads(
     return results
 
 @router.get("/{thread_id}")
-def get_thread(thread_id: str, session: sessionDep) -> Thread | None:
+def get_thread(thread_id: uuid.UUID, session: sessionDep) -> Thread | None:
     thread = session.get(Thread, thread_id)
     return thread
 

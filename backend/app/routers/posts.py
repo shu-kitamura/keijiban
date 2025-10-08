@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 @router.get("/")
-def get_posts(thread_id: str, session: sessionDep) -> list[Post]:
+def get_posts(thread_id: uuid.UUID, session: sessionDep) -> list[Post]:
     statement = select(Post).where(Post.thread_id == thread_id)
     posts = session.exec(statement).all()
     return posts
@@ -27,7 +27,7 @@ def create_post(thread_id: uuid.UUID, post_create: PostCreate, session: sessionD
 
 
 @router.delete("/{post_id}")
-def delete_post(post_id: str, session: sessionDep):
+def delete_post(post_id: uuid.UUID, session: sessionDep):
     statement = delete(Post).where(Post.id == post_id)
     session.exec(statement)
     session.commit()
