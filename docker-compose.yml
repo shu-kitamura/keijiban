@@ -8,7 +8,6 @@ services:
       db:
         condition: service_healthy
     environment:
-      # TODO: パスワード / ドライバ名などは必要に応じて調整
       - DATABASE_URL=mssql+pymssql://sa:YourStrong!Passw0rd@db:1433/dev
     volumes:
       - ./backend:/app:delegated
