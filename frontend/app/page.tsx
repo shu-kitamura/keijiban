@@ -40,7 +40,10 @@ export default function Home() {
       </section>
     </div>
 
-    {/* スレッド作成 */}
+    {/*
+      TODO: スレッド作成
+      ボタンを押したら、投稿作成ページに飛ぶ
+    */}
     <div>
 
     </div>
