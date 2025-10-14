@@ -18,7 +18,7 @@ def search_threads(
             title="Search Query",
             description="The search query for threads",
             min_length=1,
-            max_length=10
+            max_length=255
         ),
     ) -> list[Thread]:
 

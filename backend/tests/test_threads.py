@@ -22,7 +22,7 @@ def test_create_and_get_thread(client: TestClient) -> None:
     assert body["owner"] == "alice"
 
 
-def test_search_threads_filters_by_title(client: TestClient) -> None:
+def test_search_threads(client: TestClient) -> None:
     matching_thread = _create_thread(client, title="FastAPI Tips", owner="bob")
     _create_thread(client, title="Other topic", owner="carol")
 
@@ -32,6 +32,24 @@ def test_search_threads_filters_by_title(client: TestClient) -> None:
     threads = response.json()
     assert len(threads) == 1
     assert threads[0]["id"] == matching_thread["id"]
+
+
+def test_search_threads_returns_empty_list_when_no_matches(client: TestClient) -> None:
+    _create_thread(client, title="Different topic")
+
+    response = client.get("/api/v1/threads/search", params={"q": "Nope"})
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_search_threads_rejects_empty_query(client: TestClient) -> None:
+    response = client.get("/api/v1/threads/search", params={"q": ""})
+    assert response.status_code == 422
+
+
+def test_search_threads_rejects_overlong_query(client: TestClient) -> None:
+    response = client.get("/api/v1/threads/search", params={"q": "x" * 256})
+    assert response.status_code == 422
 
 
 def test_create_post_and_list_posts(client: TestClient) -> None:
