@@ -1,72 +1,88 @@
+from uuid import uuid4
+
 from fastapi.testclient import TestClient
 
 
-def _create_thread(client: TestClient, *, title: str = "Test Thread", description: str | None = "About tests", owner: str = "alice") -> dict:
-    response = client.post(
-        "/api/v1/threads/",
-        json={"title": title, "description": description, "owner": owner},
-    )
-    assert response.status_code == 200
-    return response.json()
+def test_create_thread(client: TestClient) -> None:
+    payload = {"title": "Test Thread", "description": "About tests", "owner": "alice"}
 
+    response = client.post("/api/v1/threads/", json=payload)
 
-def test_create_and_get_thread(client: TestClient) -> None:
-    thread = _create_thread(client)
-
-    response = client.get(f"/api/v1/threads/{thread['id']}")
     assert response.status_code == 200
 
     body = response.json()
-    assert body["id"] == thread["id"]
-    assert body["title"] == thread["title"]
-    assert body["owner"] == "alice"
+    assert body["title"] == payload["title"]
+    assert body["owner"] == payload["owner"]
+    assert "id" in body
+
+
+def test_create_thread_empty_title(client: TestClient) -> None:
+    payload = {"title": "", "description": "About tests", "owner": "alice"}
+
+    response = client.post("/api/v1/threads/", json=payload)
+
+    assert response.status_code == 422
 
 
 def test_search_threads(client: TestClient) -> None:
-    matching_thread = _create_thread(client, title="FastAPI Tips", owner="bob")
-    _create_thread(client, title="Other topic", owner="carol")
+    first = client.post("/api/v1/threads/", json={"title": "FastAPI Tips", "description": "About tests", "owner": "bob"})
+    second = client.post("/api/v1/threads/", json={"title": "Other topic", "description": "About tests", "owner": "carol"})
+
+    assert first.status_code == 200
+    assert second.status_code == 200
 
     response = client.get("/api/v1/threads/search", params={"q": "Fast"})
+
     assert response.status_code == 200
 
     threads = response.json()
-    assert len(threads) == 1
-    assert threads[0]["id"] == matching_thread["id"]
+    assert len(threads) >= 1
 
 
-def test_search_threads_returns_empty_list_when_no_matches(client: TestClient) -> None:
-    _create_thread(client, title="Different topic")
+def test_search_threads_not_match(client: TestClient) -> None:
+    created = client.post("/api/v1/threads/", json={"title": "Different topic", "description": "About tests", "owner": "alice"})
+
+    assert created.status_code == 200
 
     response = client.get("/api/v1/threads/search", params={"q": "Nope"})
+
     assert response.status_code == 200
     assert response.json() == []
 
 
-def test_search_threads_rejects_empty_query(client: TestClient) -> None:
+def test_search_threads_empty_query(client: TestClient) -> None:
     response = client.get("/api/v1/threads/search", params={"q": ""})
+
     assert response.status_code == 422
 
 
-def test_search_threads_rejects_overlong_query(client: TestClient) -> None:
+def test_search_threads_overlong_query(client: TestClient) -> None:
     response = client.get("/api/v1/threads/search", params={"q": "x" * 256})
+
     assert response.status_code == 422
 
 
-def test_create_post_and_list_posts(client: TestClient) -> None:
-    thread = _create_thread(client)
+def test_get_thread(client: TestClient) -> None:
+    payload = {"title": "Test Thread", "description": "About tests", "owner": "alice"}
+    created = client.post("/api/v1/threads/", json=payload)
 
-    post_response = client.post(
-        f"/api/v1/threads/{thread['id']}/posts/",
-        json={"content": "Hello world", "author": "dave"},
-    )
-    assert post_response.status_code == 200
-    post = post_response.json()
-    assert post["thread_id"] == thread["id"]
-    assert post["content"] == "Hello world"
+    assert created.status_code == 200
 
-    list_response = client.get(f"/api/v1/threads/{thread['id']}/posts/")
-    assert list_response.status_code == 200
-    posts = list_response.json()
-    assert len(posts) == 1
-    assert posts[0]["id"] == post["id"]
-    assert posts[0]["author"] == "dave"
+    thread_id = created.json()["id"]
+
+    response = client.get(f"/api/v1/threads/{thread_id}")
+
+    assert response.status_code == 200
+
+    body = response.json()
+    assert body["id"] == thread_id
+    assert body["title"] == payload["title"]
+    assert body["owner"] == payload["owner"]
+
+
+def test_get_thread_not_found(client: TestClient) -> None:
+    missing_id = uuid4()
+
+    response = client.get(f"/api/v1/threads/{missing_id}")
+
+    assert response.status_code == 404

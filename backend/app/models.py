@@ -5,7 +5,7 @@ from sqlmodel import Field, SQLModel
 
 
 class ThreadBase(SQLModel):
-    title: str
+    title: str = Field(..., min_length=1)
     description: str | None = None
     owner: str
 
