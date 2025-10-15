@@ -1,6 +1,6 @@
 import uuid
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from sqlmodel import select
 
 from app import sessionDep
@@ -29,6 +29,8 @@ def search_threads(
 @router.get("/{thread_id}")
 def get_thread(thread_id: uuid.UUID, session: sessionDep) -> Thread | None:
     thread = session.get(Thread, thread_id)
+    if thread is None:
+        raise HTTPException(status_code=404, detail="Thread not found")
     return thread
 
 @router.post("/")
