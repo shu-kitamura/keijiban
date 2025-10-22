@@ -1,33 +1,25 @@
-@minLength(3)
-@maxLength(11)
-param storagePrefix string
-
-@allowed([
-  'Standard_LRS'
-  'Standard_GRS'
-  'Standard_RAGRS'
-  'Standard_ZRS'
-  'Premium_LRS'
-  'Premium_ZRS'
-  'Standard_GZRS'
-  'Standard_RAGZRS'
-])
-param storageSKU string = 'Standard_LRS'
-
 param location string = resourceGroup().location
 
-var uniqueStorageName = '${storagePrefix}${uniqueString(resourceGroup().id)}'
+var vnetName = 'my-vnet'
+var subnetName = 'my-subnet-1'
 
-resource stg 'Microsoft.Storage/storageAccounts@2019-04-01' = {
-  name: uniqueStorageName
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
+  name: vnetName
   location: location
-  sku: {
-    name: storageSKU
-  }
-  kind: 'StorageV2'
   properties: {
-    supportsHttpsTrafficOnly: true
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/16'
+      ]
+    }
+  }
+
+  resource subnet1 'subnets' = {
+    name: subnetName
+    properties: {
+      addressPrefix: '10.0.0.0/24'
+    }
   }
 }
 
-output storageEndpoint object = stg.properties.primaryEndpoints
+output subnetResourceId string = virtualNetwork::subnet1.id
