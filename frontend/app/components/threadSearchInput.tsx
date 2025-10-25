@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import type { Thread } from "@/app/types";
+import { SearchIcon } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Input } from "@/components/ui/input"
 
 type ThreadSearchInputProps = {
     query: string;
-    setQuery: (query: string) => void;
     startTransition: (callback: () => Promise<void>) => void;
     setResults: (results: any) => void;
 }
@@ -30,30 +34,19 @@ export default function ThreadSearchInput({startTransition, setResults }: Thread
             });
     };
     return (
-        <form onSubmit={onSubmit} className="mt-10">
-            <label htmlFor="search" className="sr-only">
-                検索キーワード
-            </label>
-            <div className="relative max-w-2xl mx-auto">
-                <input
-                    id="search"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="キーワードを入力"
-                    className="w-full rounded-xl border border-slate-400 bg-white px-4 py-3 pr-12 shadow-sm outline-none focus:ring-2 focus:ring-sky-400"
-                />
-                <button
-                    type="submit"
-                    aria-label="検索"
-                    className="absolute right-1.5 top-1.5 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-400 bg-white hover:bg-slate-50 active:scale-[.98]"
-                >
-              {/* 虫眼鏡アイコン（SVG） */}
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-700">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </button>
-            </div>
-        </form>
+        <div className="flex justify-center mt-4">
+            <form onSubmit={onSubmit}>
+                <ButtonGroup>
+                    <Input
+                        placeholder="Search..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <Button variant="outline" aria-label="Search">
+                        <SearchIcon />
+                    </Button>
+                </ButtonGroup>
+            </form>
+        </div>
     );
 }
