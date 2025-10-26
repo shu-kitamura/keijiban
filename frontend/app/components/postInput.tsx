@@ -1,22 +1,24 @@
-"use client";
+"use client"
+
+import { ArrowUpIcon } from "lucide-react"
+import { useState } from "react";
+
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group"
+import { Switch } from "@/components/ui/switch"
+import { Separator } from "@/components/ui/separator"
+
 
 type PostFormProps = {
-    thread_id?: string;
+    thread_id: string;
 }
 
-function handleSubmit(event: React.FormEvent, thread_id?: string) {
-    event.preventDefault();
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const content = formData.get("content") as string;
-    const author = formData.get("author") as string;
-    console.log({ content, author });
-
-    if (!content || !author) {
-        alert("ポストかポストネームが空です");
-        return;
-    }
-
+function sendPost(content: string, author: string, thread_id: string) {
     fetch(`/api/threads/${thread_id}/posts`, {
         method: "POST",
         headers: {
@@ -28,24 +30,43 @@ function handleSubmit(event: React.FormEvent, thread_id?: string) {
         }),
     }).then((res) => {
         if (res.ok) {
-            alert("ポストを送信しました");
-            window.location.reload();
+          window.location.reload();
         }
     });
 }
 
-export default function PostForm({ thread_id }: PostFormProps) {
-    return (
-        <form onSubmit={(event) => handleSubmit(event, thread_id)} className="p-4 w-full max-w-xl mx-auto">
-            <div>
-                <input name="content" className="w-full border-2 border-sky-500 rounded-md p-2" placeholder="ポストを入力" />
-            </div>
-            <div className="flex justify-between items-center mt-1">
-                <input name="author" className="border-2 border-sky-500 rounded-md" placeholder="ポストネーム" defaultValue="匿名" />
-                <button type="submit" className="px-3 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-                    ↑
-                </button>
-            </div>
-         </form>
-    )
+export default function PostInput({ thread_id }: PostFormProps) {
+  const [content, setContent] = useState("");
+  const [isAnonymous, setIsAnonymous] = useState(true);
+
+  return (
+    <div className="grid w-full max-w-sm gap-6 mb-4">
+      <InputGroup>
+        <InputGroupTextarea
+          placeholder="ポストを入力"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <InputGroupAddon align="block-end">
+          <div className="flex items-center gap-2 px-2 ml-auto">
+            <InputGroupText className="ml-auto">匿名投稿</InputGroupText>
+            <Switch
+              defaultChecked={isAnonymous}
+              onCheckedChange={setIsAnonymous}
+            />
+          </div>
+          <Separator orientation="vertical" className="!h-4" />
+          <InputGroupButton
+            variant="default"
+            className="rounded-full"
+            size="icon-xs"
+            onClick={() => { sendPost(content, isAnonymous ? "Anonymous" : "User", thread_id); }}
+          >
+            <ArrowUpIcon />
+            <span className="sr-only">Send</span>
+          </InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+  );
 }

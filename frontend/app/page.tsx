@@ -7,13 +7,9 @@ import ThreadSearchResult from "@/app/components/threadSearchResult";
 import ThreadSearchInput from "@/app/components/threadSearchInput";
 import Header from "@/app/components/header";
 
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Input } from "@/components/ui/input"
-
 export default function Home() {
   console.log("home");
-  const [query, setQuery] = useState("");
+  const [query, _setQuery] = useState("");
   const [results, setResults] = useState<Thread[] | null>(null);
   const [isPending, startTransition] = useTransition();
 

@@ -1,7 +1,9 @@
 
 import PostCard from "@/app/components/postCard";
-import PostForm from "@/app/components/postInput";
+import PostInput from "@/app/components/postInput";
 import type { Post, Thread } from "@/app/types";
+
+import Header from "@/app/components/header";
 
 const backendOrigin = process.env.BACKEND_ORIGIN;
 
@@ -23,9 +25,7 @@ export default async function Page(
 
     return (
         <div>
-            <h1 className="text-center text-3xl md:text-4xl font-bold tracking-tight">
-                {thread.title}
-            </h1>
+            <Header title={thread.title} />
 
             <div className="mx-auto max-w-3xl px-4 py-12">
                 <ul>
@@ -41,8 +41,8 @@ export default async function Page(
                 </ul>
             </div>
 
-            <div className="mx-auto max-w-3xl px-4 py-12">
-                <PostForm 
+            <div className="flex justify-center">
+                <PostInput
                     thread_id={thread_id}
                 />
             </div>
