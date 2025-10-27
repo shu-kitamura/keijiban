@@ -8,6 +8,16 @@ import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Input } from "@/components/ui/input"
 
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+
 type ThreadSearchInputProps = {
     query: string;
     startTransition: (callback: () => Promise<void>) => void;
@@ -34,19 +44,29 @@ export default function ThreadSearchInput({startTransition, setResults }: Thread
             });
     };
     return (
-        <div className="flex justify-center mt-4">
-            <form onSubmit={onSubmit}>
-                <ButtonGroup>
-                    <Input
-                        placeholder="Search..."
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
-                    <Button variant="outline" aria-label="Search">
-                        <SearchIcon />
-                    </Button>
-                </ButtonGroup>
-            </form>
+        <div className="w-full max-w-sm">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Search Threads</CardTitle>
+                    <CardDescription>
+                        Enter your title below to search for threads
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={onSubmit}>
+                        <ButtonGroup>
+                            <Input
+                                placeholder="Search..."
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                            />
+                            <Button variant="outline" aria-label="Search">
+                                <SearchIcon />
+                            </Button>
+                        </ButtonGroup>
+                    </form>
+                </CardContent>
+            </Card>
         </div>
     );
 }
