@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import type { Thread } from "@/app/types";
 import ThreadSearchResult from "@/app/components/threadSearchResult";
 import ThreadSearchInput from "@/app/components/threadSearchInput";
+import ThreadCreateInput from "@/app/components/threadCreateInput";
 import Header from "@/app/components/header";
 
 import {
@@ -57,6 +58,12 @@ export default function Home() {
               </section>
             </div>
 
+          </TabsContent>
+
+          <TabsContent value="create">
+            <div className="flex justify-center mt-4">
+              <ThreadCreateInput />
+            </div>
           </TabsContent>
         </Tabs>
       </div>

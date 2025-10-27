@@ -10,10 +10,8 @@ import { Input } from "@/components/ui/input"
 
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -47,7 +45,7 @@ export default function ThreadSearchInput({startTransition, setResults }: Thread
         <div className="w-full max-w-sm">
             <Card>
                 <CardHeader>
-                    <CardTitle>Search Threads</CardTitle>
+                    <CardTitle>Search Thread</CardTitle>
                     <CardDescription>
                         Enter your title below to search for threads
                     </CardDescription>
